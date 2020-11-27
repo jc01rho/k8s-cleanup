@@ -65,8 +65,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./build
-          file: ./build/Dockerfile
+          context: .
+          file: ./Dockerfile
           platforms: linux/amd64,linux/arm/v7
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
