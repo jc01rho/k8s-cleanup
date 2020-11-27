@@ -2,14 +2,13 @@ FROM alpine
 
 ARG TARGETARCH
 
-ENV ETCD_VERSION 3.1.4
-ENV KUBE_VERSION 1.7.8
+ENV ETCD_VERSION 3.4.0
 
 RUN apk add --update bash curl docker \
     && rm -rf /var/cache/apk/*
 
 RUN cd /usr/local/bin \
-    && curl -O https://storage.googleapis.com/kubernetes-release/release/v${KUBE_VERSION}/bin/linux/$TARGETARCH/kubectl \
+    curl -O https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl \
     && chmod 755 /usr/local/bin/kubectl
 
 RUN cd /tmp \
