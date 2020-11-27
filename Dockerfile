@@ -11,6 +11,8 @@ RUN cd /usr/local/bin \
     && curl -O https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl \
     && chmod 755 /usr/local/bin/kubectl
 
+RUN if [ "$TARGETARCH" = "arm" ] ; then $TARGETARCH = 'arm64'; else echo 'amd64'; fi
+
 RUN cd /tmp \
     && curl -OL https://github.com/coreos/etcd/releases/download/v${ETCD_VERSION}/etcd-v${ETCD_VERSION}-linux-${TARGETARCH}.tar.gz \ 
     && tar zxf etcd-v${ETCD_VERSION}-linux-${TARGETARCH}.tar.gz \
