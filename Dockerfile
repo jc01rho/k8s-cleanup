@@ -8,7 +8,7 @@ RUN apk add --update bash curl docker \
     && rm -rf /var/cache/apk/*
 
 RUN cd /usr/local/bin \
-    curl -O https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl \
+    && curl -O https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl \
     && chmod 755 /usr/local/bin/kubectl
 
 RUN cd /tmp \
