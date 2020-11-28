@@ -22,7 +22,7 @@ spec:
             path: /var/run/docker.sock
       containers:
       - name: k8s-cleanup
-        image: onfido/k8s-cleanup
+        image: ghcr.io/anyfavors/k8s-cleanup:1.0.2
         imagePullPolicy: Always
         resources:
           requests:

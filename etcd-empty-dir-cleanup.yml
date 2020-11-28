@@ -1,5 +1,4 @@
----
-apiVersion: batch/v2alpha1
+apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: etcd-empty-dir-cleanup
@@ -22,7 +21,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: k8s-cleanup
-            image: onfido/k8s-cleanup
+            image: ghcr.io/anyfavors/k8s-cleanup:1.0.2
             command: ["/bin/bash", "/bin/etcd-empty-dir-cleanup.sh"]
             resources:
               requests:
