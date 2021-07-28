@@ -6,8 +6,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
-    tags:
-      - 'v*'
+
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -23,16 +22,68 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
+        with:
+          fetch-depth: 0
+
+
+      - name: Build an canary security image from Dockerfile #for trivy checks before doing a crossbuild.
+        run: |
+          docker build -t docker.io/anyfavors/k8s-cleanup:${{ github.sha }} .
+          
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'docker.io/anyfavors/k8s-cleanup:${{ github.sha }}'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results.sarif'
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results.sarif'  
+          
+      - name: semantic version
+        id: semantic_version
+        uses: paulhatch/semantic-version@v4.0.2
+        with:
+          # The prefix to use to identify tags
+         tag_prefix: "v"
+         # A string which, if present in a git commit, indicates that a change represents a
+         # major (breaking) change, supports regular expressions wrapped with '/'
+         major_pattern: "(MAJOR)"
+         # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+         minor_pattern: "(MINOR)"
+         # A string to determine the format of the version output
+         format: "v${major}.${minor}.${patch}"
+         # Optional path to check for changes. If any changes are detected in the path the
+         # 'changed' output will true. Enter multiple paths separated by spaces.
+         #change_path: "src/my-service"
+         # Named version, will be used as suffix for name version tag
+         #namespace: alpssh
+         # Indicate whether short tags like 'v1' should be supported. If false only full
+         # tags like 'v1.0.0' will be recognized.
+         short_tags: true
+         # If this is set to true, *every* commit will be treated as a new version.
+         bump_each_commit: true 
+
+
+      - name: do release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.semantic_version.outputs.version }}
+
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v3.3.0
+        uses: docker/metadata-action@v3.4.1
         with:
           images: ghcr.io/anyfavors/k8s-cleanup # list of Docker images to use as base name for tags
-          tag-sha: true # add git short SHA as Docker tag
-          tag-semver: |
-            {{version}}
-            {{major}}.{{minor}}
+          tags: |
+            type=semver,enable=true,priority=900,pattern={{version}},value=${{ steps.semantic_version.outputs.version }}                  
+          
+
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -72,7 +123,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm/v7
+          platforms: linux/amd64, linux/arm/v7, linux/arm64
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
