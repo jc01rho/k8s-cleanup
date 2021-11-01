@@ -46,7 +46,7 @@ jobs:
           
       - name: semantic version
         id: semantic_version
-        uses: paulhatch/semantic-version@v4.0.2
+        uses: paulhatch/semantic-version@v4.0.3
         with:
           # The prefix to use to identify tags
          tag_prefix: "v"
