@@ -28,12 +28,12 @@ jobs:
 
       - name: Build an canary security image from Dockerfile #for trivy checks before doing a crossbuild.
         run: |
-          docker build -t docker.io/anyfavors/k8s-cleanup:${{ github.sha }} .
+          docker build -t docker.io/jc01rho/k8s-cleanup:${{ github.sha }} .
           
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'docker.io/anyfavors/k8s-cleanup:${{ github.sha }}'
+          image-ref: 'docker.io/jc01rho/k8s-cleanup:${{ github.sha }}'
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
@@ -79,7 +79,7 @@ jobs:
         id: docker_meta
         uses: docker/metadata-action@v3.5.0
         with:
-          images: ghcr.io/anyfavors/k8s-cleanup # list of Docker images to use as base name for tags
+          images: ghcr.io/jc01rho/k8s-cleanup # list of Docker images to use as base name for tags
           tags: |
             type=semver,enable=true,priority=900,pattern={{version}},value=${{ steps.semantic_version.outputs.version }}                  
           
