@@ -4,7 +4,7 @@ ARG TARGETARCH
 
 ENV ETCD_VERSION 3.4.0
 
-RUN apk add --update bash curl docker \
+RUN apk add --update bash curl docker cri-tools \
     && rm -rf /var/cache/apk/*
 
 RUN cd /usr/local/bin \
@@ -32,6 +32,7 @@ COPY docker-clean.sh k8s-clean.sh etcd-empty-dir-cleanup.sh /bin/
 RUN chmod +x /bin/docker-clean.sh /bin/k8s-clean.sh /bin/etcd-empty-dir-cleanup.sh
 
 ENV DOCKER_CLEAN_INTERVAL 1800
+ENV CONATINERD_CLEAN_INTERVAL 1800
 ENV DAYS 7
 
 CMD ["bash", "/bin/docker-clean.sh"]

@@ -17,22 +17,21 @@ spec:
         app: k8s-cleanup
     spec:
       volumes:
-        - name: dockersocket
-          hostPath:
-            path: /var/run/docker.sock
-        - name: dockersocket
+        - name: containerdsocket
           hostPath:
             path: /run/containerd/containerd.sock
       containers:
       - name: k8s-cleanup
         image: ghcr.io/jc01rho/k8s-cleanup:1.0.0
         imagePullPolicy: Always
+        env:
+          - name: CONATINERD_CLEAN_INTERVAL
+            value: 2592000
+            #one month
         resources:
           requests:
             cpu: 100m
             memory: 50Mi
         volumeMounts:
-          - name: dockersocket
-            mountPath: /var/run/docker.sock
           - name: containerdsocket
             mountPath: /run/containerd/containerd.sock
