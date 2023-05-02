@@ -7,7 +7,6 @@ while true; do
   crictl rmi --prune
   fi
 
-
   # CONATINERD_CLEAN_INTERVAL defaults to 30min
   sleep $CONATINERD_CLEAN_INTERVAL
 done
