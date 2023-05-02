@@ -1,16 +1,6 @@
 #!/bin/bash
 
-while true; do
-  # Remove exited containers
-  # docker ps -a -q -f status=exited    | xargs --no-run-if-empty docker rm -v
-  # Remove dangling images
-  #docker images -f "dangling=true" -q | xargs --no-run-if-empty docker rmi
-  # docker image prune --all --force
-  # Remove dangling volumes
-  # docker volume ls -qf dangling=true  | xargs --no-run-if-empty docker volume rm
-  
-  
-  
+while true; do  
   if ! [ -x "$(command -v crictl)" ]; then
   echo 'Error: crictl is not installed.' >&2
   else
@@ -18,6 +8,6 @@ while true; do
   fi
 
 
-  # DOCKER_CLEAN_INTERVAL defaults to 30min
+  # CONATINERD_CLEAN_INTERVAL defaults to 30min
   sleep $CONATINERD_CLEAN_INTERVAL
 done
