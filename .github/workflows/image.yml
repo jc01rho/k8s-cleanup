@@ -52,7 +52,7 @@ jobs:
           
       - name: semantic version
         id: semantic_version
-        uses: paulhatch/semantic-version@v4.0.3
+        uses: paulhatch/semantic-version@v5.0.2
         with:
           # The prefix to use to identify tags
          tag_prefix: "v"
@@ -81,21 +81,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.semantic_version.outputs.version }}
              
-          
-
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-        with:
-          platforms: all
+    
 
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
-        with:
-          version: latest
-          buildkitd-flags: --debug
-          driver-opts: image=moby/buildkit:v0.11.6
        
       - name: Builder instance name
         run: echo ${{ steps.buildx.outputs.name }}
