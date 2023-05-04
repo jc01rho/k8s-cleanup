@@ -52,7 +52,7 @@ jobs:
           
       - name: semantic version
         id: semantic_version
-        uses: paulhatch/semantic-version@v5.0.2
+        uses: paulhatch/semantic-version@v5.0.3
         with:
           # The prefix to use to identify tags
          tag_prefix: "v"
@@ -94,7 +94,7 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
     
       - name: Cache Docker layers
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
