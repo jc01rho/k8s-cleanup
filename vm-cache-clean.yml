@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: k8s-cleanup
+      app: k8s-nodes-vm-cache-clean
   updateStrategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,10 +16,6 @@ spec:
       labels:
         app: k8s-nodes-vm-cache-clean
     spec:
-      volumes:
-        - name: containerdsocket
-          hostPath:
-            path: /run/containerd/containerd.sock
       containers:
       - name: k8s-nodes-vm-cache-clean
         image: ghcr.io/jc01rho/k8s-cleanup:latest
@@ -34,6 +30,4 @@ spec:
           requests:
             cpu: 100m
             memory: 50Mi
-        volumeMounts:
-          - name: containerdsocket
-            mountPath: /run/containerd/containerd.sock
+
