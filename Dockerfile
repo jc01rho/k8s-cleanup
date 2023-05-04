@@ -27,7 +27,7 @@ RUN if [ $TARGETARCH == "arm" ] ; then \
     && chmod +x /usr/local/bin/etcdctl \     
     ; fi
     
-RUN VERSION="v1.26.0" ; wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/critest-$VERSION-linux-amd64.tar.gz ; sudo tar zxvf critest-$VERSION-linux-amd64.tar.gz -C /usr/local/bin ; rm -f critest-$VERSION-linux-amd64.tar.gz
+RUN VERSION="v1.26.0" ; wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/critest-$VERSION-linux-amd64.tar.gz ; tar zxvf critest-$VERSION-linux-amd64.tar.gz -C /usr/local/bin ; rm -f critest-$VERSION-linux-amd64.tar.gz
 
 COPY docker-clean.sh k8s-clean.sh etcd-empty-dir-cleanup.sh /bin/
 RUN chmod +x /bin/docker-clean.sh /bin/k8s-clean.sh /bin/etcd-empty-dir-cleanup.sh
