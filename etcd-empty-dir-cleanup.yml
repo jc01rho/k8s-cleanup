@@ -21,7 +21,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: k8s-cleanup
-            image: ghcr.io/anyfavors/k8s-cleanup:1.0.2
+            image: ghcr.io/jc01rho/k8s-cleanup:latest
             command: ["/bin/bash", "/bin/etcd-empty-dir-cleanup.sh"]
             resources:
               requests:
