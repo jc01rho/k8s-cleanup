@@ -1,4 +1,5 @@
 FROM alpine
+LABEL org.opencontainers.image.source https://github.com/jc01rho/k8s-cleanup
 
 ARG TARGETARCH
 
