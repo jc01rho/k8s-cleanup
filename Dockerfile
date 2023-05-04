@@ -32,7 +32,7 @@ RUN VERSION="v1.27.0" ; wget https://github.com/kubernetes-sigs/cri-tools/releas
 
 COPY vm-cache-clean.sh containerd-clean.sh docker-clean.sh k8s-clean.sh etcd-empty-dir-cleanup.sh /bin/
 RUN chmod +x /bin/docker-clean.sh /bin/k8s-clean.sh /bin/etcd-empty-dir-cleanup.sh /bin/vm-cache-clean.sh /bin/containerd-clean.sh  ; mkdir -p /etc ; 
-RUN echo -e "runtime-endpoint: unix:///run/containerd/containerd.sock\nimage-endpoint: unix:///run/containerd/containerd.sock" > /etc/ctictl.yaml
+RUN echo -e "runtime-endpoint: unix:///run/containerd/containerd.sock\nimage-endpoint: unix:///run/containerd/containerd.sock" > /etc/crictl.yaml
 
 ENV DOCKER_CLEAN_INTERVAL 1800
 ENV CONATINERD_CLEAN_INTERVAL 1800
