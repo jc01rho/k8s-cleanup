@@ -28,7 +28,7 @@ spec:
           - "/bin/vm-cache-clean.sh"
         env:
           - name: DROP_CACHES_INTERVAL
-            value: 604800
+            value: "604800"
             #one week
         resources:
           requests:
