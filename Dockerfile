@@ -30,11 +30,12 @@ RUN if [ $TARGETARCH == "arm" ] ; then \
     
 RUN VERSION="v1.27.0" ; wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz ; tar zxvf crictl-$VERSION-linux-amd64.tar.gz -C /usr/local/bin ; rm -f crictl-$VERSION-linux-amd64.tar.gz
 
-COPY docker-clean.sh k8s-clean.sh etcd-empty-dir-cleanup.sh /bin/
-RUN chmod +x /bin/docker-clean.sh /bin/k8s-clean.sh /bin/etcd-empty-dir-cleanup.sh
+COPY vm-cache-clean.sh docker-clean.sh k8s-clean.sh etcd-empty-dir-cleanup.sh /bin/
+RUN chmod +x /bin/docker-clean.sh /bin/k8s-clean.sh /bin/etcd-empty-dir-cleanup.sh /bin/vm-cache-clean.sh
 
 ENV DOCKER_CLEAN_INTERVAL 1800
 ENV CONATINERD_CLEAN_INTERVAL 1800
+ENV DROP_CACHES_INTERVAL 604800
 ENV DAYS 7
 
 CMD ["bash", "/bin/docker-clean.sh"]
