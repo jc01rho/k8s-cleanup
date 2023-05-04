@@ -11,6 +11,12 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -55,7 +61,7 @@ jobs:
          major_pattern: "(MAJOR)"
          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
          minor_pattern: "(MINOR)"
-         # A string to determine the format of the version output
+         # A string to determine the format of the version outpRut
          format: "v${major}.${minor}.${patch}"
          # Optional path to check for changes. If any changes are detected in the path the
          # 'changed' output will true. Enter multiple paths separated by spaces.
@@ -74,14 +80,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.semantic_version.outputs.version }}
-
-      - name: Docker meta
-        id: docker_meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ghcr.io/jc01rho/k8s-cleanup # list of Docker images to use as base name for tags
-          tags: |
-            type=semver,enable=true,priority=900,pattern={{version}},value=${{ steps.semantic_version.outputs.version }}                  
+             
           
 
 
@@ -115,9 +114,17 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: jc01rho
           password: ${{ secrets.CR_PAT }}
-          
+
+      - name: Docker meta
+        id: docker_meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,enable=true,priority=900,pattern={{version}},value=${{ steps.semantic_version.outputs.version }}     
+            
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
@@ -127,5 +134,4 @@ jobs:
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
-          secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.CR_PAT }}
+
