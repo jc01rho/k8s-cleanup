@@ -21,7 +21,7 @@ spec:
           serviceAccountName: k8s-cleanup
           containers:
             - name: k8s-cleanup
-              image: ghcr.io/anyfavors/k8s-cleanup:1.0.2
+              image: ghcr.io/anyfavors/k8s-cleanup:1.0.33
               command: ["/bin/bash", "/bin/k8s-clean.sh"]
               imagePullPolicy: Always
               resources:
