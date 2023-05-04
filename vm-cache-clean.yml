@@ -22,6 +22,8 @@ spec:
         imagePullPolicy: Always
         args:
           - "/bin/vm-cache-clean.sh"
+        securityContext:
+          privileged: true
         env:
           - name: DROP_CACHES_INTERVAL
             value: "604800"
