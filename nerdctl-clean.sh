@@ -2,7 +2,7 @@
 
 while true; do  
   if ! [ -x "$(command -v nerdctl)" ]; then
-  echo 'Error: crictl is not installed.' >&2
+  echo 'Error: nerdctl is not installed.' >&2
   else
   nerdctl image prune --all --force
   nerdctl container prune -f
