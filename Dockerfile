@@ -31,8 +31,8 @@ RUN if [ $TARGETARCH == "arm" ] ; then \
 RUN VERSION="v1.27.0" ; wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz ; tar zxvf crictl-$VERSION-linux-amd64.tar.gz -C /usr/local/bin ; rm -f crictl-$VERSION-linux-amd64.tar.gz
 RUN VERSION="1.3.1" ; wget https://github.com/containerd/nerdctl/releases/download/v${VERSION}/nerdctl-${VERSION}-linux-amd64.tar.gz ; tar Cxzvf /usr/local/bin nerdctl-$VERSION-linux-amd64.tar.gz ; rm -f nerdctl-$VERSION-linux-amd64.tar.gz 
 
-COPY vm-cache-clean.sh containerd-clean.sh docker-clean.sh k8s-clean.sh etcd-empty-dir-cleanup.sh /bin/
-RUN chmod +x /bin/docker-clean.sh /bin/k8s-clean.sh /bin/etcd-empty-dir-cleanup.sh /bin/vm-cache-clean.sh /bin/containerd-clean.sh  ; mkdir -p /etc ; 
+COPY vm-cache-clean.sh containerd-clean.sh docker-clean.sh k8s-clean.sh etcd-empty-dir-cleanup.sh nerdctl-clean.sh /bin/
+RUN chmod +x /bin/docker-clean.sh /bin/k8s-clean.sh /bin/etcd-empty-dir-cleanup.sh /bin/vm-cache-clean.sh /bin/containerd-clean.sh /bin/nerdctl-clean.sh ; mkdir -p /etc ; 
 RUN echo -e "runtime-endpoint: unix:///run/containerd/containerd.sock\nimage-endpoint: unix:///run/containerd/containerd.sock" > /etc/crictl.yaml
 
 ENV DOCKER_CLEAN_INTERVAL 1800
