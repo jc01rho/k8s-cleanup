@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: k8s-containerd-cleanup
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: k8s-containerd-cleanup
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 10%
+  template:
+    metadata:
+      labels:
+        app: k8s-containerd-cleanup
+    spec:
+      volumes:
+        - name: containerdsocket
+          hostPath:
+            path: /run/containerd/containerd.sock
+      containers:
+      - name: k8s-containerd-cleanup
+        image: ghcr.io/jc01rho/k8s-cleanup:latest
+        imagePullPolicy: Always
+        args:
+          - "/bin/containerd-clean.sh"
+        env:
+          - name: CONATINERD_CLEAN_INTERVAL
+            value: "2592000"
+            #one month
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+        volumeMounts:
+          - name: containerdsocket
+            mountPath: /run/containerd/containerd.sock
