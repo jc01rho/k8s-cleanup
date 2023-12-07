@@ -28,8 +28,8 @@ spec:
           - "/bin/nerdctl-clean.sh"
         env:
           - name: CONATINERD_CLEAN_INTERVAL
-            value: "2592000"
-            #one month
+            value: "259200"
+            #3 days
         resources:
           requests:
             cpu: 100m
