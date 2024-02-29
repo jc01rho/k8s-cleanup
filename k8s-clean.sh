@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # DAYS defaults to 7
-max=$DAYS
+max=7
 
 # Get rs, filter by days, filter by empty rs and select rs older than $max days
 emptyReplicaSets=$(kubectl get rs --all-namespaces | \
