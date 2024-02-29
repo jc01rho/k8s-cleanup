@@ -12,12 +12,15 @@ emptyReplicaSets=$(kubectl get rs --all-namespaces | \
 # Loop through empty replica sets and delete them
 for rs in $emptyReplicaSets; do
   IFS='|' read namespace replicaSet <<< "$rs";
+  if [[ $"namespace" == "teamcity-agents" ]]; then
+    continue
+  fi
   kubectl -n $namespace delete rs $replicaSet;
   sleep 0.25
 done
 
 # Get finished jobs older than 1h
-finishedJobs=$(kubectl get jobs --all-namespaces | awk 'IF $4 == 1 && $5 ~ /h|d/ {print $1 "|" $2}')
+finishedJobs=$(kubectl get jobs --all-namespaces | awk 'IF $3 == "1/1" && $5 ~ /[2-9]d/ {print $1 "|" $2}')
 
 # Loop through jobs and delete them
 for job in $finishedJobs; do
