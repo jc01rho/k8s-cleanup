@@ -3,13 +3,13 @@ LABEL org.opencontainers.image.source https://github.com/jc01rho/k8s-cleanup
 
 ARG TARGETARCH
 
-ENV ETCD_VERSION 3.5.11
+ENV ETCD_VERSION 3.5.15
 
 RUN apk add --update bash curl docker  \
     && rm -rf /var/cache/apk/*
 
 RUN cd /usr/local/bin \
-    && curl -O https://storage.googleapis.com/kubernetes-release/release/v1.25.9/bin/linux/${TARGETARCH}/kubectl \
+    && curl -O https://storage.googleapis.com/kubernetes-release/release/v1.30.6/bin/linux/${TARGETARCH}/kubectl \
     && chmod 755 /usr/local/bin/kubectl
 
 RUN if [ $TARGETARCH == "arm" ] ; then \
