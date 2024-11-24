@@ -13,13 +13,12 @@ spec:
           name: k8s-cleanup
         spec:
           nodeSelector:
-            kubernetes.io/role: master
+            node-role.kubernetes.io/control-plane: ""
           tolerations:
           - effect: NoSchedule
-            key: node-role.kubernetes.io
-            value: master
+            key: node-role.kubernetes.io/control-plane
           restartPolicy: OnFailure
-          serviceAccountName: k8s-cleanup
+          serviceAccountName: admin-user-kube-system
           containers:
             - name: k8s-cleanup
               image: ghcr.io/jc01rho/k8s-cleanup:latest

@@ -18,7 +18,7 @@ spec:
           tolerations:
           - effect: NoSchedule
             key: node-role.kubernetes.io
-            value: master
+            value: control-plane
           restartPolicy: OnFailure
           containers:
           - name: k8s-cleanup
