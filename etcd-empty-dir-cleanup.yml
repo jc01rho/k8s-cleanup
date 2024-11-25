@@ -14,11 +14,10 @@ spec:
         spec:
           hostNetwork: true
           nodeSelector:
-            kubernetes.io/role: master
+            node-role.kubernetes.io/control-plane: ""
           tolerations:
           - effect: NoSchedule
-            key: node-role.kubernetes.io
-            value: control-plane
+            key: node-role.kubernetes.io/control-plane
           restartPolicy: OnFailure
           containers:
           - name: k8s-cleanup
