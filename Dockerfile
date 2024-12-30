@@ -9,7 +9,7 @@ RUN apk add --update bash curl docker  \
     && rm -rf /var/cache/apk/*
 
 RUN cd /usr/local/bin \
-    && curl -O https://dl.k8s.io/release/v1.30.6/bin/linux/${TARGETARCH}/kubectl \
+    && curl --location -O https://dl.k8s.io/release/v1.30.6/bin/linux/${TARGETARCH}/kubectl \
     && chmod 755 /usr/local/bin/kubectl
 
 RUN if [ $TARGETARCH == "arm" ] ; then \
