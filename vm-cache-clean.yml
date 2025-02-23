@@ -26,7 +26,7 @@ spec:
           privileged: true
         env:
           - name: DROP_CACHES_INTERVAL
-            value: "604800"
+            value: "21600"
             #one week
         resources:
           requests:
